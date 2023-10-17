@@ -6,15 +6,33 @@ import schema from './schema';
 import {products} from "@functions/mock";
 
 export const getProductById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
-  const { productId } = event.pathParameters;
-  const product = products.find(item => item.id === productId)
-  const response =  formatJSONResponse({product});
+  let product;
+  let response;
 
-  if(!product) {
-    response.statusCode = 404;
+  try {
+    const { productId } = event.pathParameters;
+    product = products.find(item => item.id === productId)
+    response = formatJSONResponse({product});
+  } catch (e) {
+    return {
+      ...formatJSONResponse(
+          {
+            message: "Error"
+          }),
+      statusCode: 500
+    }
   }
 
-  return response;
+  if(!product) {
+    return {
+      ...formatJSONResponse(
+        {
+          message: "Product not found"
+        }),
+      statusCode: 404
+    }
+  }
+  return response
 };
 
 export const main = middyfy(getProductById);
