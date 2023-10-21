@@ -1,0 +1,24 @@
+{
+  "name": "shop-nodejs-aws-cloudfront",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "init": "cd product-service && npm i",
+    "deploy:product-service": "cd product-service && serverless deploy",
+    "remove:product-service": "cd product-service && serverless remove"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yustinrd/shop-nodejs-aws-cloudfront.git"
+  },
+  "author": "Roman Iustin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yustinrd/shop-nodejs-aws-cloudfront/issues"
+  },
+  "homepage": "https://github.com/yustinrd/shop-nodejs-aws-cloudfront#readme",
+  "dependencies": {
+    "serverless": "^3.35.2"
+  }
+}
