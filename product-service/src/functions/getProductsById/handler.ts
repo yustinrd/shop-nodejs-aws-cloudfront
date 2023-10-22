@@ -1,23 +1,29 @@
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { formatJSONResponse } from '@libs/api-gateway';
+import { getProductsByIdFromDB, getStockByIdFromDB } from '@services/db';
 import { middyfy } from '@libs/lambda';
 
 import schema from './schema';
-import {products} from "@functions/mock";
 
 export const getProductById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
   let product;
+  let stock;
   let response;
+  console.log('event', event);
 
   try {
     const { productId } = event.pathParameters;
-    product = products.find(item => item.id === productId)
-    response = formatJSONResponse({product});
-  } catch (e) {
+    [product, stock] = await Promise.all([getProductsByIdFromDB(productId), getStockByIdFromDB(productId)]);
+
+      response = formatJSONResponse({product: {
+      ...product,
+        count: stock?.count || 0
+      }});
+  } catch ({message}) {
     return {
       ...formatJSONResponse(
           {
-            message: "Error"
+            message
           }),
       statusCode: 500
     }

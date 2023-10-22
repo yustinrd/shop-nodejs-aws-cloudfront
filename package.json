@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/yustinrd/shop-nodejs-aws-cloudfront#readme",
   "dependencies": {
+    "aws-sdk": "^2.1478.0",
     "serverless": "^3.35.2"
   }
 }
